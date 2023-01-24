@@ -3,12 +3,13 @@ import uuid
 from django.db.models import Model, ForeignKey, CharField, ImageField, UUIDField, CASCADE, DecimalField, SET_NULL, \
     TextField
 from mptt.fields import TreeForeignKey
+from mptt.models import MPTTModel
 
 
-class Category(Model):
+class Category(MPTTModel):
     id = UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
     name = CharField(max_length=55)
-    subcategory = TreeForeignKey('self', SET_NULL, null=True, blank=True)
+    parent = TreeForeignKey('self', SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -27,6 +28,7 @@ class Shop(Model):
 class Product(Model):
     id = UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
     name = CharField(max_length=55)
+    description = TextField()
     price = DecimalField(max_digits=9, decimal_places=2)
     category = ForeignKey('home.Category', CASCADE)
     shop = ForeignKey('home.Shop', CASCADE)

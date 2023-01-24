@@ -1,5 +1,7 @@
+from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
 from rest_framework.serializers import ModelSerializer
 
+from home.documents import ProductDocument
 from home.models import Product, Shop, ProductImages, Category
 
 
@@ -25,3 +27,12 @@ class ProductImagesModelSerializer(ModelSerializer):
     class Meta:
         model = ProductImages
         fields = '__all__'
+
+
+class ProductDocumentSerializer(DocumentSerializer):
+    class Meta:
+        document = ProductDocument
+        fields = [
+            'name',
+            'description', 'category__name'
+        ]
